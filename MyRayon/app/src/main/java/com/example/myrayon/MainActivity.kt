@@ -1,124 +1,60 @@
 package com.example.myrayon
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.*
-import com.example.myrayon.data.db.DBHelper
-import com.example.myrayon.ui.screens.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.example.myrayon.databinding.ActivityMainBinding
+import com.example.myrayon.ui.auth.LoginActivity
+import com.example.myrayon.ui.chat.ChatFragment
+import com.example.myrayon.ui.news.NewsFragment
+import com.example.myrayon.ui.profile.ProfileFragment
+import com.example.myrayon.ui.requests.RequestsFragment
+import com.example.myrayon.ui.votes.VotesFragment
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
-    lateinit var dbHelper: DBHelper
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dbHelper = DBHelper(this)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        if (dbHelper.getUser(1) == null) {
-            dbHelper.addUser("Super Admin", "admin@domain.com", "Admin Address", "admin")
+        val prefs = getSharedPreferences("MyRayonPrefs", MODE_PRIVATE)
+        val userId = prefs.getInt("userId", -1)
+        if (userId == -1) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
         }
 
-        setContent {
-            MainScreen(dbHelper)
-        }
-    }
-}
+        replaceFragment(RequestsFragment())
 
-@Composable
-fun MainScreen(dbHelper: DBHelper) {
-    var currentUserId by remember { mutableStateOf(0) }
-    val navController = rememberNavController()
-
-    val tabs = listOf(
-        BottomNavItem("News", Icons.Default.List, "news"),
-        BottomNavItem("Profile", Icons.Default.Person, "profile"),
-        BottomNavItem("Requests", Icons.Default.Build, "requests"),
-        BottomNavItem("Chat", Icons.Default.Email, "chat"),
-        BottomNavItem("Voting", Icons.Default.Notifications, "voting")
-    )
-
-    Scaffold(
-        bottomBar = {
-            NavigationBar(modifier = Modifier.fillMaxWidth()) {
-                tabs.forEach { tab ->
-                    NavigationBarItem(
-                        icon = { Icon(tab.icon, contentDescription = tab.title) },
-                        label = { Text(tab.title) },
-                        selected = navController.currentDestination?.route == tab.route,
-                        onClick = {
-                            navController.navigate(tab.route) {
-                                popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                    )
-                }
-            }
-        }
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = "news",
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable("news") {
-                NewsScreen(dbHelper, isAdmin = (currentUserId == 1))
-            }
-            composable("profile") {
-                if (currentUserId == 0) {
-                    LoginScreen(dbHelper) { userId ->
-                        currentUserId = userId
-                        navController.navigate("profile") {
-                            popUpTo("profile") { inclusive = true }
-                        }
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_requests -> replaceFragment(RequestsFragment())
+                R.id.nav_news -> replaceFragment(NewsFragment())
+                R.id.nav_votes -> replaceFragment(VotesFragment())
+                R.id.nav_chat -> replaceFragment(ChatFragment())
+                R.id.nav_profile -> {
+                    if (getSharedPreferences("MyRayonPrefs", MODE_PRIVATE).getInt("userId", -1) == -1) {
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        finish()
+                    } else {
+                        replaceFragment(ProfileFragment())
                     }
-                } else {
-                    ProfileScreen(dbHelper, currentUserId)
+                    true
                 }
+                else -> false
             }
-            composable("requests") {
-                if (currentUserId != 0) {
-                    RequestsScreen(dbHelper, currentUserId)
-                } else {
-                    NotAuthorizedScreen("requests")
-                }
-            }
-            composable("chat") {
-                if (currentUserId != 0) {
-                    ChatScreen(dbHelper, currentUserId)
-                } else {
-                    NotAuthorizedScreen("chat")
-                }
-            }
-            composable("voting") {
-                if (currentUserId != 0) {
-                    VotingScreen(dbHelper, isAdmin = (currentUserId == 1))
-                } else {
-                    NotAuthorizedScreen("voting")
-                }
-            }
+            true
         }
     }
-}
 
-data class BottomNavItem(val title: String, val icon: androidx.compose.ui.graphics.vector.ImageVector, val route: String)
-
-@Composable
-fun NotAuthorizedScreen(feature: String) {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text("You should enter or login  \"$feature\".", style = MaterialTheme.typography.bodyLarge)
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 }

@@ -15,6 +15,7 @@ class DBHelper(context: Context) :
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "name TEXT," +
                     "email TEXT," +
+                    "password TEXT," +
                     "address TEXT," +
                     "role TEXT)"
         )
@@ -22,7 +23,7 @@ class DBHelper(context: Context) :
             "CREATE TABLE requests (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "userId INTEGER," +
-                    "district TEXT," +
+                    "street TEXT," +
                     "text TEXT," +
                     "status TEXT)"
         )
@@ -48,18 +49,32 @@ class DBHelper(context: Context) :
                     "content TEXT)"
         )
         db.execSQL(
-            "CREATE TABLE districts (" +
+            "CREATE TABLE street (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "name TEXT)"
         )
+
+        // Insert default admin if not exists
+        val cursor = db.rawQuery("SELECT * FROM users WHERE email='admin@example.com'", null)
+        if (!cursor.moveToFirst()) {
+            val cv = ContentValues()
+            cv.put("name", "Admin")
+            cv.put("email", "admin@example.com")
+            cv.put("password", "admin")
+            cv.put("address", "Admin Address")
+            cv.put("role", "Admin")
+            db.insert("users", null, cv)
+        }
+        cursor.close()
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
 
-    fun addUser(name: String, email: String, address: String, role: String = "User") {
+    fun addUser(name: String, email: String, password: String, address: String, role: String = "User") {
         val cv = ContentValues()
         cv.put("name", name)
         cv.put("email", email)
+        cv.put("password", password)
         cv.put("address", address)
         cv.put("role", role)
         writableDatabase.insert("users", null, cv)
@@ -73,7 +88,8 @@ class DBHelper(context: Context) :
                 cursor.getString(1),
                 cursor.getString(2),
                 cursor.getString(3),
-                role = cursor.getString(4))
+                address = cursor.getString(4),
+                role = cursor.getString(5))
             cursor.close()
             return user
         }
@@ -93,7 +109,8 @@ class DBHelper(context: Context) :
                 cursor.getString(1),
                 cursor.getString(2),
                 cursor.getString(3),
-                cursor.getString(4) // role
+                address = cursor.getString(4),
+                cursor.getString(5)
             )
             cursor.close()
             return user
@@ -102,9 +119,10 @@ class DBHelper(context: Context) :
         return null
     }
 
-    fun addRequest(userId: Int, text: String) {
+    fun addRequest(userId: Int, street: String, text: String) {
         val cv = ContentValues()
         cv.put("userId", userId)
+        cv.put("street", street)
         cv.put("text", text)
         cv.put("status", "New")
         writableDatabase.insert("requests", null, cv)
@@ -128,7 +146,11 @@ class DBHelper(context: Context) :
     fun updateRequestStatus(id: Int, status: String): Boolean {
         val cv = ContentValues()
         cv.put("status", status)
-        val rows = writableDatabase.update("requests", cv, "id=?", arrayOf(id.toString()))
+        val rows = writableDatabase.update(
+            "requests",
+            cv,
+            "id=?",
+            arrayOf(id.toString()))
         return rows > 0
     }
 
@@ -187,7 +209,12 @@ class DBHelper(context: Context) :
         val list = mutableListOf<Vote>()
         val cursor = readableDatabase.rawQuery("SELECT * FROM votes", null)
         while (cursor.moveToNext()) {
-            list.add(Vote(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4)))
+            list.add(Vote(
+                cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getInt(2),
+                cursor.getInt(3),
+                cursor.getInt(4)))
         }
         cursor.close()
         return list
@@ -204,7 +231,20 @@ class DBHelper(context: Context) :
         val list = mutableListOf<News>()
         val cursor = readableDatabase.rawQuery("SELECT * FROM news", null)
         while (cursor.moveToNext()) {
-            list.add(News(cursor.getInt(0), cursor.getString(1), cursor.getString(2)))
+            list.add(News(
+                cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getString(2)))
+        }
+        cursor.close()
+        return list
+    }
+
+    fun getAllStreets(): List<Street> {
+        val list = mutableListOf<Street>()
+        val cursor = readableDatabase.rawQuery("SELECT * FROM street", null)
+        while (cursor.moveToNext()) {
+            list.add(Street(cursor.getInt(0), cursor.getString(1)))
         }
         cursor.close()
         return list
