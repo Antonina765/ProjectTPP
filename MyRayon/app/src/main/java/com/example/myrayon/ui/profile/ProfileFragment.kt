@@ -43,23 +43,33 @@ class ProfileFragment : Fragment() {
         val user = dbHelper.getUser(currentUserId)
         currentUserRole = user?.role ?: "User"
 
+        // Set greeting in header
+        binding.tvGreeting.text = if (currentUserRole == "Admin") {
+            "Администратор: ${user?.name ?: "Admin"}"
+        } else {
+            "Добро пожаловать, ${user?.name ?: "Пользователь"}!"
+        }
+
+        // Logout button - same for both roles
+        binding.btnLogout.setOnClickListener {
+            // Clear saved user data
+            prefs.edit().clear().apply()
+            // Go to login screen
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+            requireActivity().finish()
+        }
+
         if (currentUserRole == "Admin") {
+            // Admin view: show all requests
             setupRecyclerView()
             loadRequests()
             binding.userInfoLayout.visibility = View.GONE
             binding.recyclerView.visibility = View.VISIBLE
         } else {
+            // Regular user view: show user info
             displayUserInfo(user)
             binding.userInfoLayout.visibility = View.VISIBLE
             binding.recyclerView.visibility = View.GONE
-
-            binding.btnLogout.setOnClickListener {
-                // Clear saved user data
-                prefs.edit().clear().apply()
-                // Go to login screen
-                startActivity(Intent(requireContext(), LoginActivity::class.java))
-                requireActivity().finish()
-            }
         }
     }
 

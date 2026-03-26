@@ -11,6 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyRayon">
+
+        <!-- MainActivity is the launcher (entry point) -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -18,10 +20,20 @@
             android:theme="@style/Theme.MyRayon">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- LoginActivity (needs to be declared, even if not launcher) -->
+        <activity
+            android:name=".ui.auth.LoginActivity"
+            android:exported="false" />
+
+        <!-- RegisterActivity -->
+        <activity
+            android:name=".ui.auth.RegisterActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
