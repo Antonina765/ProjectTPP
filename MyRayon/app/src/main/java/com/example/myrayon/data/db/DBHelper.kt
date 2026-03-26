@@ -16,7 +16,7 @@ class DBHelper(context: Context) :
                     "name TEXT," +
                     "email TEXT," +
                     "address TEXT," +
-                    "role Text)"
+                    "role TEXT)"
         )
         db.execSQL(
             "CREATE TABLE requests (" +
@@ -68,7 +68,12 @@ class DBHelper(context: Context) :
     fun getUser(id: Int): User? {
         val cursor = readableDatabase.rawQuery("SELECT * FROM users WHERE id=?", arrayOf(id.toString()))
         if (cursor.moveToFirst()) {
-            val user = User(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3))
+            val user = User(
+                cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3),
+                role = cursor.getString(4))
             cursor.close()
             return user
         }
@@ -109,7 +114,12 @@ class DBHelper(context: Context) :
         val list = mutableListOf<Request>()
         val cursor = readableDatabase.rawQuery("SELECT * FROM requests", null)
         while (cursor.moveToNext()) {
-            list.add(Request(cursor.getInt(0), cursor.getInt(1), cursor.getString(2), cursor.getString(3)))
+            list.add(Request(
+                cursor.getInt(0),
+                cursor.getInt(1),
+                cursor.getString(2),
+                cursor.getString(3),
+                status = cursor.getString(4)))
         }
         cursor.close()
         return list

@@ -5,5 +5,5 @@ data class Request(
     val userId: Int,
     val district: String,
     val text: String,
-    val status: String // "Новая", "В работе", "Выполнена"
+    val status: String // "New", "In process", "Done"
 )
