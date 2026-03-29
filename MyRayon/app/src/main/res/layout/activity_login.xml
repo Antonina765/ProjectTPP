@@ -3,15 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center">
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="@color/bg_grey">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Мой Район"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_500"
+        android:layout_marginBottom="48dp"/>
 
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:background="@drawable/bg_edittext"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -19,20 +31,29 @@
         android:layout_height="wrap_content"
         android:hint="Пароль"
         android:inputType="textPassword"
-        android:layout_marginTop="8dp" />
+        android:background="@drawable/bg_edittext"
+        android:layout_marginTop="12dp"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:text="Войти"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_button_primary"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tvRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Нет аккаунта? Зарегистрируйтесь"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/design_default_color_primary" />
+        android:layout_marginTop="24dp"
+        android:padding="8dp"
+        android:textColor="@color/purple_500"
+        android:textStyle="bold" />
 </LinearLayout>

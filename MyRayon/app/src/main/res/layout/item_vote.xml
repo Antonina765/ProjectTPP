@@ -3,67 +3,103 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp"
-    android:background="?selectableItemBackground">
+    android:padding="16dp"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_card"
+    android:elevation="3dp"
+    android:foreground="?attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/tvQuestion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:lineSpacingExtra="4dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        android:layout_marginTop="8dp">
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
 
         <Button
             android:id="@+id/btnAgree"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="За" />
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="За"
+            android:backgroundTint="#4CAF50"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btnDisagree"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Против" />
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Против"
+            android:backgroundTint="#F44336"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/btnAbstain"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Воздержаться" />
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Воздержаться"
+            android:backgroundTint="#9E9E9E"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textAllCaps="false" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="16dp"
+        android:background="#F5F5F5"
+        android:padding="10dp"
+        android:weightSum="3">
 
         <TextView
             android:id="@+id/tvAgree"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#388E3C"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/tvDisagree"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#D32F2F"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/tvAbstain"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#616161"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize="14sp"/>
     </LinearLayout>
 </LinearLayout>

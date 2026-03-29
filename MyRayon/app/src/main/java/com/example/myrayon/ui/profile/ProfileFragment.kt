@@ -81,7 +81,7 @@ class ProfileFragment : Fragment() {
         binding.tvName.text = "Имя: ${user.name}"
         binding.tvEmail.text = "Email: ${user.email}"
         binding.tvAddress.text = "Адрес: ${user.address}"
-        binding.tvRole.text = "Роль: ${user.role}"
+        //binding.tvRole.text = "Роль: ${user.role}"
     }
 
     private fun setupRecyclerView() {

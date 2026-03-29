@@ -3,25 +3,44 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp"
-    android:background="?selectableItemBackground">
+    android:padding="16dp"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    android:background="@drawable/bg_card"
+    android:elevation="2dp"
+    android:foreground="?attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/tvStreet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tvText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="8dp"
+        android:textColor="@color/text_secondary"
+        android:textSize="15sp"
+        android:maxLines="2"
+        android:ellipsize="end" />
 
     <TextView
         android:id="@+id/tvStatus"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textColor="@android:color/holo_blue_dark" />
+        android:layout_marginTop="12dp"
+        android:background="#E3F2FD"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:textColor="#1976D2"
+        android:textStyle="bold"
+        android:textSize="12sp" />
 </LinearLayout>
