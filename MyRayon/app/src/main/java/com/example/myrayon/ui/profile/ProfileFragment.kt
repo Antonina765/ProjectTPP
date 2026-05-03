@@ -13,6 +13,9 @@ import com.example.myrayon.databinding.FragmentProfileBinding
 import com.example.myrayon.model.Request
 import com.example.myrayon.ui.adapters.RequestAdapter
 import com.example.myrayon.ui.auth.LoginActivity
+import androidx.appcompat.app.AlertDialog
+import android.widget.EditText
+import com.example.myrayon.R
 
 class ProfileFragment : Fragment() {
 
@@ -85,14 +88,52 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = RequestAdapter(requestList, currentUserRole) { request ->
-            // Admin can update status by clicking on a request
+        adapter = RequestAdapter(requestList, currentUserRole) { request, action ->
             if (currentUserRole == "Admin") {
-                showStatusUpdateDialog(request)
+                when (action) {
+                    "status" -> showStatusUpdateDialog(request)
+                    "options" -> showRequestOptionsDialog(request)
+                }
             }
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
+    }
+
+    // НОВЫЙ МЕТОД
+    private fun showRequestOptionsDialog(request: Request) {
+        val options = arrayOf("Редактировать", "Удалить")
+        AlertDialog.Builder(requireContext())
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> showEditRequestDialog(request)
+                    1 -> {
+                        dbHelper.deleteRequest(request.id)
+                        loadRequests()
+                        Toast.makeText(requireContext(), "Заявка удалена", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }.show()
+    }
+
+    // НОВЫЙ МЕТОД
+    private fun showEditRequestDialog(request: Request) {
+        val view = layoutInflater.inflate(R.layout.dialog_add_request, null)
+        val etStreet = view.findViewById<android.widget.EditText>(R.id.etStreet)
+        val etText = view.findViewById<android.widget.EditText>(R.id.etText)
+
+        etStreet.setText(request.street)
+        etText.setText(request.text)
+
+        AlertDialog.Builder(requireContext())
+            .setView(view)
+            .setTitle("Редактировать заявку")
+            .setPositiveButton("Сохранить") { _, _ ->
+                dbHelper.updateRequestInfo(request.id, etStreet.text.toString(), etText.text.toString())
+                loadRequests()
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
     }
 
     private fun loadRequests() {
@@ -102,7 +143,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showStatusUpdateDialog(request: Request) {
-        val statuses = arrayOf("New", "In process", "Done")
+        val statuses = arrayOf("New", "In process", "Done", "Denied")
         androidx.appcompat.app.AlertDialog.Builder(requireContext())
             .setTitle("Изменить статус")
             .setItems(statuses) { _, which ->
@@ -118,4 +159,7 @@ class ProfileFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
+
 }

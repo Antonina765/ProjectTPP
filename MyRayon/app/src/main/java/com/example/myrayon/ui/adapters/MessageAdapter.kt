@@ -11,8 +11,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class MessageAdapter(private val messages: List<Message>) :
-    RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
+class MessageAdapter(private val messages: List<Message>,
+                     private val onMessageLongClick: (Message) -> Unit
+) : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvUser: TextView = itemView.findViewById(R.id.tvUser)
@@ -32,6 +33,10 @@ class MessageAdapter(private val messages: List<Message>) :
         holder.tvText.text = msg.text
         holder.tvTime.text = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
             .format(Date(msg.timestamp))
+        holder.itemView.setOnLongClickListener {
+            onMessageLongClick(msg)
+            true
+        }
     }
 
     override fun getItemCount() = messages.size

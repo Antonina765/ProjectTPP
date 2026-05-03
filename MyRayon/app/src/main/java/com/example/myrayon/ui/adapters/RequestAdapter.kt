@@ -11,7 +11,7 @@ import com.example.myrayon.model.Request
 class RequestAdapter(
     private val requests: List<Request>,
     private val userRole: String,
-    private val onStatusClick: (Request) -> Unit
+    private val onActionClick: (Request, String) -> Unit
 ) : RecyclerView.Adapter<RequestAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -33,9 +33,14 @@ class RequestAdapter(
         holder.tvStatus.text = "Status: ${request.status}"
 
         if (userRole == "Admin") {
-            holder.itemView.setOnClickListener { onStatusClick(request) }
+            holder.itemView.setOnClickListener { onActionClick(request, "status") }
+            holder.itemView.setOnLongClickListener {
+                onActionClick(request, "options")
+                true
+            }
         } else {
             holder.itemView.setOnClickListener(null)
+            holder.itemView.setOnLongClickListener(null)
         }
     }
 
