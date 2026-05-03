@@ -3,18 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="16dp"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    android:background="@drawable/bg_card"
+    android:elevation="2dp">
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/black" />
+
+    <View android:layout_width="60dp" android:layout_height="2dp" android:background="@color/teal_200" android:layout_marginTop="8dp" android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/tvContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp" />
+        android:textColor="@color/black"
+        android:alpha="0.87"
+        android:textSize="15sp"
+        android:lineSpacingExtra="2dp" />
 </LinearLayout>

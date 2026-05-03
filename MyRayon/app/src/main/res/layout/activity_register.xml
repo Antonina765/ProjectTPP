@@ -3,14 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center">
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="@color/bg_grey">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Регистрация"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="32dp"/>
 
     <EditText
         android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Имя" />
+        android:hint="Имя"
+        android:background="@drawable/bg_edittext"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/etEmail"
@@ -18,7 +30,8 @@
         android:layout_height="wrap_content"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:layout_marginTop="8dp" />
+        android:background="@drawable/bg_edittext"
+        android:layout_marginTop="12dp" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -26,19 +39,26 @@
         android:layout_height="wrap_content"
         android:hint="Пароль"
         android:inputType="textPassword"
-        android:layout_marginTop="8dp" />
+        android:background="@drawable/bg_edittext"
+        android:layout_marginTop="12dp" />
 
     <EditText
         android:id="@+id/etAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Адрес"
-        android:layout_marginTop="8dp" />
+        android:hint="Адрес (Улица, дом, кв.)"
+        android:background="@drawable/bg_edittext"
+        android:layout_marginTop="12dp" />
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:text="Зарегистрироваться"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_button_primary"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textSize="16sp" />
 </LinearLayout>

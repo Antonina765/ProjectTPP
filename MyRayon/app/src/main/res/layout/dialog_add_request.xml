@@ -3,19 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Новая заявка"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="16dp"/>
 
     <EditText
         android:id="@+id/etStreet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Street" />
+        android:hint="Улица и дом (где проблема)"
+        android:background="@drawable/bg_edittext"
+        android:inputType="textPostalAddress" />
 
     <EditText
         android:id="@+id/etText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Текст заявки"
-        android:minLines="3"
-        android:layout_marginTop="8dp" />
+        android:hint="Текст заявки (опишите проблему)"
+        android:gravity="top"
+        android:minLines="4"
+        android:background="@drawable/bg_edittext"
+        android:layout_marginTop="12dp"
+        android:inputType="textMultiLine|textCapSentences" />
 </LinearLayout>

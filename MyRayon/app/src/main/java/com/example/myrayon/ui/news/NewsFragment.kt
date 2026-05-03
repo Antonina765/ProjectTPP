@@ -55,9 +55,47 @@ class NewsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = NewsAdapter(newsList)
+        adapter = NewsAdapter(newsList) { news ->
+            if (currentUserRole == "Admin") showNewsOptionsDialog(news)
+        }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
+    }
+
+    // НОВЫЙ МЕТОД
+    private fun showNewsOptionsDialog(news: News) {
+        val options = arrayOf("Редактировать", "Удалить")
+        AlertDialog.Builder(requireContext())
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> showEditNewsDialog(news)
+                    1 -> {
+                        dbHelper.deleteNews(news.id)
+                        loadNews()
+                        Toast.makeText(requireContext(), "Новость удалена", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }.show()
+    }
+
+    // НОВЫЙ МЕТОД
+    private fun showEditNewsDialog(news: News) {
+        val view = layoutInflater.inflate(R.layout.dialog_add_news, null)
+        val etTitle = view.findViewById<android.widget.EditText>(R.id.etTitle)
+        val etContent = view.findViewById<android.widget.EditText>(R.id.etContent)
+
+        etTitle.setText(news.title)
+        etContent.setText(news.content)
+
+        AlertDialog.Builder(requireContext())
+            .setView(view)
+            .setTitle("Редактировать новость")
+            .setPositiveButton("Сохранить") { _, _ ->
+                dbHelper.updateNews(news.id, etTitle.text.toString(), etContent.text.toString())
+                loadNews()
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
     }
 
     private fun loadNews() {

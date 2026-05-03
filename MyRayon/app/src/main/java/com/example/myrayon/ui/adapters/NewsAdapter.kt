@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myrayon.R
 import com.example.myrayon.model.News
 
-class NewsAdapter(private val newsList: List<News>) :
+class NewsAdapter(
+    private val newsList: List<News>,
+    private val onNewsLongClick: (News) -> Unit) :
     RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,6 +28,10 @@ class NewsAdapter(private val newsList: List<News>) :
         val news = newsList[position]
         holder.tvTitle.text = news.title
         holder.tvContent.text = news.content
+        holder.itemView.setOnLongClickListener {
+            onNewsLongClick(news)
+            true
+        }
     }
 
     override fun getItemCount() = newsList.size

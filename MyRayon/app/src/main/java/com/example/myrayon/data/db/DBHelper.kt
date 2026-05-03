@@ -164,23 +164,21 @@ class DBHelper(context: Context) :
 
     fun getAllMessagesWithUsers(): List<Message> {
         val query = """
-        SELECT messages.id, users.name, messages.text, messages.timestamp
+        SELECT messages.id, messages.userId, users.name, messages.text, messages.timestamp
         FROM messages
         JOIN users ON users.id = messages.userId
         ORDER BY timestamp ASC
-    """
+        """
         val cursor = readableDatabase.rawQuery(query, null)
         val list = mutableListOf<Message>()
-
         while (cursor.moveToNext()) {
-            list.add(
-                Message(
-                    id = cursor.getInt(0),
-                    userName = cursor.getString(1),
-                    text = cursor.getString(2),
-                    timestamp = cursor.getLong(3)
-                )
-            )
+            list.add(Message(
+                id = cursor.getInt(0),
+                userId = cursor.getInt(1), // Добавлено
+                userName = cursor.getString(2),
+                text = cursor.getString(3),
+                timestamp = cursor.getLong(4)
+            ))
         }
         cursor.close()
         return list
@@ -248,5 +246,32 @@ class DBHelper(context: Context) :
         }
         cursor.close()
         return list
+    }
+
+    // Для чата
+    fun deleteMessage(id: Int) {
+        writableDatabase.delete("messages", "id=?", arrayOf(id.toString()))
+    }
+    fun updateMessage(id: Int, newText: String) {
+        val cv = ContentValues().apply { put("text", newText) }
+        writableDatabase.update("messages", cv, "id=?", arrayOf(id.toString()))
+    }
+
+    // Для новостей
+    fun deleteNews(id: Int) {
+        writableDatabase.delete("news", "id=?", arrayOf(id.toString()))
+    }
+    fun updateNews(id: Int, title: String, content: String) {
+        val cv = ContentValues().apply { put("title", title); put("content", content) }
+        writableDatabase.update("news", cv, "id=?", arrayOf(id.toString()))
+    }
+
+    // Для заявок
+    fun deleteRequest(id: Int) {
+        writableDatabase.delete("requests", "id=?", arrayOf(id.toString()))
+    }
+    fun updateRequestInfo(id: Int, street: String, text: String) {
+        val cv = ContentValues().apply { put("street", street); put("text", text) }
+        writableDatabase.update("requests", cv, "id=?", arrayOf(id.toString()))
     }
 }

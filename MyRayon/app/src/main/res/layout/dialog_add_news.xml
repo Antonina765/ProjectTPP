@@ -3,19 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="20dp"> <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Добавить новость"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:textColor="@color/black"
+    android:layout_marginBottom="16dp"/>
 
     <EditText
         android:id="@+id/etTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Заголовок" />
+        android:hint="Заголовок"
+        android:background="@drawable/bg_edittext"
+        android:inputType="textCapSentences" />
 
     <EditText
         android:id="@+id/etContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Содержание"
-        android:minLines="3"
-        android:layout_marginTop="8dp" />
+        android:gravity="top"
+        android:minLines="4"
+        android:background="@drawable/bg_edittext"
+        android:layout_marginTop="12dp"
+        android:inputType="textMultiLine|textCapSentences" />
 </LinearLayout>

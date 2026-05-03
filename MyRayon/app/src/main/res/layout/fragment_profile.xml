@@ -3,71 +3,92 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/bg_grey"
     android:padding="16dp">
 
-    <!-- Header with name and logout button (visible for all) -->
     <LinearLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingBottom="16dp">
+        android:padding="16dp"
+        android:background="@drawable/bg_card"
+        android:elevation="2dp"
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:id="@+id/tvGreeting"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/purple_500" />
 
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Выйти" />
+            android:text="Выйти"
+            android:background="@drawable/bg_button_primary"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="14sp" />
     </LinearLayout>
 
-    <!-- User info layout (visible for non‑admin users) -->
     <LinearLayout
         android:id="@+id/userInfoLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:background="@drawable/bg_card"
+        android:elevation="2dp"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Данные профиля"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:layout_marginBottom="12dp"/>
 
         <TextView
             android:id="@+id/tvName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_light" android:layout_marginTop="8dp" android:layout_marginBottom="8dp"/>
 
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/tvRole"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+
     </LinearLayout>
 
-    <!-- RecyclerView for admin (list of all requests) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:clipToPadding="false"
+        android:paddingTop="8dp" />
 
 </LinearLayout>

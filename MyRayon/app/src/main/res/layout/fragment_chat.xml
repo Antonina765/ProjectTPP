@@ -2,31 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/bg_grey">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="8dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="12dp"
+        android:background="@color/white"
+        android:elevation="8dp"
+        android:gravity="center_vertical">
 
         <EditText
             android:id="@+id/etMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Введите сообщение..." />
+            android:hint="Введите сообщение..."
+            android:background="@drawable/bg_chat_input"
+            android:layout_marginEnd="12dp"
+            android:inputType="textShortMessage|textCapSentences" />
 
         <Button
             android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Отправить" />
+            android:text="Отпр."
+            android:background="@drawable/bg_button_primary"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

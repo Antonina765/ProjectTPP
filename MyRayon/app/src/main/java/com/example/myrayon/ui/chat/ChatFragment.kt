@@ -18,7 +18,7 @@ class ChatFragment : Fragment() {
 
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
-
+    private var currentUserRole: String = "User"
     private lateinit var dbHelper: DBHelper
     private lateinit var adapter: MessageAdapter
     private val messageList = mutableListOf<Message>()
@@ -42,6 +42,7 @@ class ChatFragment : Fragment() {
         dbHelper = DBHelper(requireContext())
         val prefs = requireContext().getSharedPreferences("MyRayonPrefs", 0)
         currentUserId = prefs.getInt("userId", -1)
+        currentUserRole = dbHelper.getUser(currentUserId)?.role ?: "User"
 
         setupRecyclerView()
         loadMessages()
@@ -65,11 +66,58 @@ class ChatFragment : Fragment() {
         handler.post(refreshRunnable)
     }
 
+    // НОВЫЙ МЕТОД
+    private fun showMessageOptionsDialog(message: Message) {
+        val options = mutableListOf<String>()
+        if (message.userId == currentUserId) {
+            options.add("Редактировать")
+            options.add("Удалить")
+        } else if (currentUserRole == "Admin") {
+            options.add("Удалить")
+        }
+
+        if (options.isEmpty()) return
+
+        android.app.AlertDialog.Builder(requireContext())
+            .setItems(options.toTypedArray()) { _, which ->
+                when (options[which]) {
+                    "Удалить" -> {
+                        dbHelper.deleteMessage(message.id)
+                        loadMessages()
+                    }
+                    "Редактировать" -> showEditMessageDialog(message)
+                }
+            }.show()
+    }
+
+    // НОВЫЙ МЕТОД
+    private fun showEditMessageDialog(message: Message) {
+        val editText = android.widget.EditText(requireContext())
+        editText.setText(message.text)
+
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("Редактировать сообщение")
+            .setView(editText)
+            .setPositiveButton("Сохранить") { _, _ ->
+                val newText = editText.text.toString()
+                if (newText.isNotBlank()) {
+                    dbHelper.updateMessage(message.id, newText)
+                    loadMessages()
+                }
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
+    }
+
     private fun setupRecyclerView() {
-        adapter = MessageAdapter(messageList)
+        adapter = MessageAdapter(messageList) { message ->
+            showMessageOptionsDialog(message)
+        }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
+
+
 
     private fun loadMessages() {
         messageList.clear()
